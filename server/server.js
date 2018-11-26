@@ -1,15 +1,20 @@
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 /* ROUTES */
-const auth = require("./routes/api/auth");
+const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
 
 /* EXPRESS APP */
 const app = express();
 const port = process.env.PORT || 5000;
+
+/* BODY PARSER CONFIGURATIONS */
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /* DB Config & Mongoose to Mongo connection */
 const db = require("./config/keys").mongoURI;
@@ -23,7 +28,7 @@ const publicPath = path.join(__dirname, "..", "public");
 app.use(express.static(publicPath));
 
 /* USE ROUTES */
-app.use("/api/auth", auth);
+app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 
