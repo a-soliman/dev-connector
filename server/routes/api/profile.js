@@ -40,9 +40,34 @@ router.get(
 
         res.status(200).json(profile);
       })
-      .catch(err => res.status(404).json(err));
+      .catch(err => {
+        errors.serverError = "Internal server error";
+        res.status(404).json(errors);
+      });
   }
 );
+
+/*
+    @route      GET api/profile/all
+    @desc       Gets all profiles
+    @access     Public
+*/
+router.get("/all", (req, res) => {
+  const errors = {};
+  Profile.find()
+    .populate("user", ["name", "avatar"])
+    .then(profiles => {
+      if (!profiles) {
+        errors.noProfile = "There is no profile for this user.";
+        return res.status(404).json(errors);
+      }
+      res.json(profiles);
+    })
+    .catch(err => {
+      errors.serverError = "Internal server error";
+      res.status(404).json(errors);
+    });
+});
 
 /*
     @route      GET api/profile/handle/:handle
