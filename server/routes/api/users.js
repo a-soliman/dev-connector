@@ -36,8 +36,10 @@ router.post("/register", (req, res) => {
   const passwordConfirmation = req.body.passwordConfirmation;
 
   User.findOne({ email }).then(user => {
-    if (user) return res.status(400).json({ msg: "Email already exists" });
-    else {
+    if (user) {
+      errors.email = "Email already exists.";
+      return res.status(400).json(errors);
+    } else {
       const avatar = gravatar.url(email, {
         s: "200",
         r: "pg",
@@ -79,14 +81,23 @@ router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ email }).then(user => {
-    if (!user) return res.status(404).json({ msg: "User not found." });
+    if (!user) {
+      errors.user = "User not found.";
+      return res.status(404).json(errors);
+    }
 
     bcrypt.compare(password, user.password).then(isMatch => {
-      if (!isMatch) return res.status(401).json({ msg: "Invalid password" });
+      if (!isMatch) {
+        errors.password = "Invalid password.";
+        return res.status(401).json(errors);
+      }
 
       const payload = { id: user.id, name: user.name, avatar: user.avatar };
       jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-        if (err) return res.status(500).json({ msg: "Internal server error." });
+        if (err) {
+          errors.serverError = "Internal server error.";
+          return res.status(500).json(errors);
+        }
         return res
           .status(200)
           .json({ success: true, token: `Bearer ${token}` });
