@@ -218,4 +218,45 @@ router.post(
   }
 );
 
+/*
+    @route      POST api/profile/education
+    @desc       Add education to profile
+    @access     Private
+*/
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    /* VALIDATE INPUTS */
+    const { errors, isValid } = validateEducationInput(req.body);
+    if (!isValid) return res.status(400).json(errors);
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const newEducation = {
+          school: req.body.school,
+          degree: req.body.degree,
+          fieldofstudy: req.body.fieldofstudy,
+          from: req.body.from,
+          to: req.body.to,
+          current: req.body.current,
+          description: req.body.description
+        };
+
+        profile.education.unshift(newEducation);
+        profile
+          .save()
+          .then(profile => res.json(profile))
+          .catch(err => {
+            errors.invalidData = "Invalid input data.";
+            res.status(401).json(errors);
+          });
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
