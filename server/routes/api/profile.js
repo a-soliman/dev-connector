@@ -9,6 +9,8 @@ const User = require("../../models/User");
 
 /* LOAD INPUT VALIDATION */
 const validateProfileInput = require("../../validation/profile");
+const validateExperienceInput = require("../../validation/experience");
+const validateEducationInput = require("../../validation/education");
 
 /*
     @route      GET api/profile/test
@@ -171,6 +173,48 @@ router.post(
         });
       }
     });
+  }
+);
+
+/*
+    @route      POST api/profile/experience
+    @desc       Add experience to profile
+    @access     Private
+*/
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    /* VALIDATE INPUTS */
+    const { errors, isValid } = validateExperienceInput(req.body);
+    if (!isValid) return res.status(400).json(errors);
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        console.log("user : ", profile);
+        const newExperience = {
+          title: req.body.title,
+          company: req.body.company,
+          location: req.body.location,
+          description: req.body.description,
+          from: req.body.from,
+          to: req.body.to,
+          current: req.body.current
+        };
+
+        profile.experience.unshift(newExperience);
+        profile
+          .save()
+          .then(profile => res.json(profile))
+          .catch(err => {
+            errors.invalidData = "Invalid input data.";
+            res.status(401).json(errors);
+          });
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
   }
 );
 
