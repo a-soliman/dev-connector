@@ -7,6 +7,10 @@ const passport = require("passport");
 const User = require("../../models/User");
 const keys = require("../../config/keys");
 
+/* LOAD INPUT VALIDATION */
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
+
 /*
     @route      GET api/users/test
     @desc       Tests users route
@@ -22,6 +26,10 @@ router.get("/test", (req, res) => {
     @access     Public
 */
 router.post("/register", (req, res) => {
+  /* VALIDATE INPUTS */
+  const { errors, isValid } = validateRegisterInput(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
@@ -63,6 +71,10 @@ router.post("/register", (req, res) => {
     @access     Public
 */
 router.post("/login", (req, res) => {
+  /* VALIDATE INPUTS */
+  const { errors, isValid } = validateLoginInput(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
   const { email, password } = req.body;
 
   User.findOne({ email }).then(user => {
