@@ -68,14 +68,14 @@ router.get("/handle/:handle", (req, res) => {
 });
 
 /*
-    @route      GET api/profile/id/:id
-    @desc       Gets profile by id
+    @route      GET api/profile/user/:user_id
+    @desc       Gets profile by user id
     @access     Public
 */
-router.get("/id/:id", (req, res) => {
+router.get("/user/:user_id", (req, res) => {
   const errors = {};
 
-  Profile.findById(req.params.id)
+  Profile.findOne({ user: req.params.user_id })
     .populate("user", ["name", "avatar"])
     .then(profile => {
       if (!profile) {
