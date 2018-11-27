@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
+const keys = require("../../config/keys");
 
 /*
     @route      GET api/users/test
@@ -50,6 +52,31 @@ router.post("/register", (req, res) => {
         });
       });
     }
+  });
+});
+
+/*
+    @route      GET api/users/login
+    @desc       Login user / Returns JWT Token
+    @access     Public
+*/
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }).then(user => {
+    if (!user) return res.status(404).json({ msg: "User not found." });
+
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (!isMatch) return res.status(401).json({ msg: "Invalid password" });
+
+      const payload = { id: user.id, name: user.name, avatar: user.avatar };
+      jwt.sign(payload, keys.secret, { expiresIn: 3600 }, (err, token) => {
+        if (err) return res.status(500).json({ msg: "Internal server error." });
+        return res
+          .status(200)
+          .json({ success: true, token: `Bearer ${token}` });
+      });
+    });
   });
 });
 
