@@ -68,6 +68,29 @@ router.get("/handle/:handle", (req, res) => {
 });
 
 /*
+    @route      GET api/profile/id/:id
+    @desc       Gets profile by id
+    @access     Public
+*/
+router.get("/id/:id", (req, res) => {
+  const errors = {};
+
+  Profile.findById(req.params.id)
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noProfile = "There is no profile for this user.";
+        return res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => {
+      errors.serverError = "Internal server error.";
+      res.status(500).json(errors);
+    });
+});
+
+/*
     @route      POST api/profile/
     @desc       Creates or Edits user profile
     @access     Private
