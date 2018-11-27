@@ -33,6 +33,7 @@ router.post("/register", (req, res) => {
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
+  const passwordConfirmation = req.body.passwordConfirmation;
 
   User.findOne({ email }).then(user => {
     if (user) return res.status(400).json({ msg: "Email already exists" });
