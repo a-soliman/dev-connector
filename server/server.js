@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const passport = require("passport");
 
 /* ROUTES */
 const users = require("./routes/api/users");
@@ -26,6 +27,10 @@ mongoose
 /* POINTING PUBLIC FOLDER */
 const publicPath = path.join(__dirname, "..", "public");
 app.use(express.static(publicPath));
+
+/* PASSPORT AUTHENTICATION CONFIGURATION */
+app.use(passport.initialize());
+require("./config/passport")(passport);
 
 /* USE ROUTES */
 app.use("/api/users", users);
