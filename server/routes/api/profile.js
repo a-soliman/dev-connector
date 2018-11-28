@@ -191,7 +191,6 @@ router.post(
 
     Profile.findOne({ user: req.user.id })
       .then(profile => {
-        console.log("user : ", profile);
         const newExperience = {
           title: req.body.title,
           company: req.body.company,
@@ -210,6 +209,30 @@ router.post(
             errors.invalidData = "Invalid input data.";
             res.status(401).json(errors);
           });
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
+/*
+    @route      DELETE api/profile/experience/:experience_id
+    @desc       Deletes experience object from user profile
+    @access     Private
+*/
+router.delete(
+  "/experience/:experience_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        let newExpeiencesArr = profile.experience.filter(experience => {
+          return experience.id !== req.params.experience_id;
+        });
+        profile.experience = newExpeiencesArr;
+        profile.save().then(profile => res.json(profile));
       })
       .catch(err => {
         errors.serverError = "Internal server error.";
