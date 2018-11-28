@@ -62,4 +62,29 @@ router.get(
   }
 );
 
+/*
+    @route      GET api/posts/:post_id
+    @desc       Gets a post by id
+    @access     Private
+*/
+router.get(
+  "/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.noFound = "Post was not found";
+          res.status(404).json(errors);
+        }
+        res.json(post);
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
