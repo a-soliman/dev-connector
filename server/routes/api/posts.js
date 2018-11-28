@@ -157,4 +157,49 @@ router.post(
   }
 );
 
+/*
+    @route      Post api/posts/post_id
+    @desc       Edits an exesting post
+    @access     Private
+*/
+router.post(
+  "/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    /* VALIDATE INPUTS */
+    const { errors, isValid } = validatePostInput(req.body);
+    if (!isValid) return res.status(400).json(errors);
+
+    const updatedPost = new Post({
+      text: req.body.text
+    });
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.notFound = "Post was not found";
+          return res.status(404).json(errors);
+        }
+
+        if (
+          ObjectId(post.user).toString() !== ObjectId(req.user.id).toString()
+        ) {
+          errors.authorization = "Not Authorized.";
+          return res.status(403).json(errors);
+        }
+
+        Post.findByIdAndUpdate(req.params.post_id, {
+          $set: { text: updatedPost.text }
+        }).then(post => {
+          post.text = updatedPost.text;
+          res.json(post);
+        });
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
