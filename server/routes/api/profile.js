@@ -282,4 +282,28 @@ router.post(
   }
 );
 
+/*
+    @route      DELETE api/profile/education/:education_id
+    @desc       Deletes education object from user profile
+    @access     Private
+*/
+router.delete(
+  "/education/:education_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        let newEducationArr = profile.education.filter(field => {
+          return field.id !== req.params.education_id;
+        });
+        profile.education = newEducationArr;
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
