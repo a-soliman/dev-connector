@@ -177,6 +177,23 @@ router.post(
 );
 
 /*
+    @route      DELETE api/profile/
+    @desc       Delets a user and the user's profile
+    @access     Private
+*/
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOneAndRemove({ user: req.user.id }).then(() => {
+      User.findOneAndRemove({ _id: req.user.id }).then(() =>
+        res.json({ success: true, msg: "User and profile were removed." })
+      );
+    });
+  }
+);
+
+/*
     @route      POST api/profile/experience
     @desc       Add experience to profile
     @access     Private
