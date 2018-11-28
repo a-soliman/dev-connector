@@ -20,4 +20,25 @@ router.get("/test", (req, res) => {
   res.json({ msg: "Posts Works!" });
 });
 
+/*
+    @route      GET api/posts
+    @desc       Gets an array of posts
+    @access     Private
+*/
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Post.find()
+      .then(posts => {
+        res.json(posts);
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
