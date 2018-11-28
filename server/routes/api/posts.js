@@ -41,4 +41,25 @@ router.get(
   }
 );
 
+/*
+    @route      GET api/posts/:user_id
+    @desc       Gets a list of posts by user id
+    @access     Private
+*/
+router.get(
+  "/:user_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Post.find({ user: req.params.user_id })
+      .then(posts => {
+        res.json(posts);
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
