@@ -25,21 +25,18 @@ router.get("/test", (req, res) => {
     @desc       Gets an array of posts
     @access     Private
 */
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const errors = {};
-    Post.find()
-      .then(posts => {
-        res.json(posts);
-      })
-      .catch(err => {
-        errors.serverError = "Internal server error.";
-        res.status(500).json(errors);
-      });
-  }
-);
+router.get("/", (req, res) => {
+  const errors = {};
+  Post.find()
+    .sort({ date: -1 })
+    .then(posts => {
+      res.json(posts);
+    })
+    .catch(err => {
+      errors.serverError = "Internal server error.";
+      res.status(500).json(errors);
+    });
+});
 
 /*
     @route      GET api/posts/:user_id
