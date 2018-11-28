@@ -87,4 +87,44 @@ router.get(
   }
 );
 
+/*
+    @route      DELETE api/posts/:post_id
+    @desc       Delets a post by id
+    @access     Private
+*/
+router.delete(
+  "/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.notFound = "Post was not found";
+          return res.status(404).json(errors);
+        }
+
+        if (
+          ObjectId(post.user).toString() !== ObjectId(req.user.id).toString()
+        ) {
+          errors.authorization = "Not Authorized.";
+          return res.status(403).json(errors);
+        }
+
+        Post.findByIdAndDelete(req.params.post_id).then(post => {
+          if (!post) {
+            errors.noFound = "Post was not found";
+            return res.status(404).json(errors);
+          }
+          res.json(post);
+        });
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
