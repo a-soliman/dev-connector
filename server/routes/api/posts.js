@@ -313,4 +313,54 @@ router.post(
   }
 );
 
+/*
+    @route      DELETE api/posts/comment/:post_id/:comment_id
+    @desc       removes a comment from a post
+    @access     Private
+*/
+router.delete(
+  "/comment/:post_id/:comment_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.notFound = "Post not found";
+          return res.status(404).json(errors);
+        }
+
+        let commentToRemove = post.comments.filter(
+          comment => ObjectId(comment.id).toString() === req.params.comment_id
+        );
+
+        if (commentToRemove.length < 1) {
+          errors.notFound = "Comment not found";
+          return res.status(404).json(errors);
+        }
+
+        // verify if the user did like the post previously
+        commentToRemove = commentToRemove[0];
+        if (ObjectId(commentToRemove.user).toString() !== req.user.id) {
+          errors.authorization = "Not Authorized.";
+          console.log(commentToRemove);
+          console.log(ObjectId(commentToRemove.user).toString(), req.user.id);
+          return res.status(403).json(errors);
+        }
+        post.comments = post.comments.filter(
+          comment =>
+            ObjectId(comment.id).toString() !==
+            ObjectId(commentToRemove.id).toString()
+        );
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        console.log(err);
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
