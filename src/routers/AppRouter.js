@@ -3,7 +3,12 @@ import { Router, Route, Switch, Link, NavLink } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 /* LAYOUT COMPONENTS */
 import Navbar from "../components/layout/Navbar";
+import Landing from "../components/layout/Landing";
 import Footer from "../components/layout/Footer";
+
+/* AUTH COMPONENTS */
+import Register from "../components/auth/Register";
+import Login from "../components/auth/Login";
 
 import DashboardPage from "../components/DashboardPage";
 import NotFoundPage from "../components/NotFoundPage";
@@ -18,7 +23,14 @@ const AppRouter = () => (
     <div>
       <Navbar />
       <Switch>
-        <PublicRoute path="/" component={LoginPage} exact={true} />
+        <PublicRoute
+          path="/"
+          component={Landing}
+          exact={true}
+          no_container={true}
+        />
+        <PublicRoute path="/register" component={Register} exact={true} />
+        <PublicRoute path="/login" component={Login} exact={true} />
         <PrivateRoute path="/dashboard" component={DashboardPage} />
         <Route component={NotFoundPage} />
       </Switch>
