@@ -9,6 +9,7 @@
     "build:prod": "webpack -p --env production",
     "dev-server-fe": "webpack-dev-server",
     "dev-server-be": "nodemon server/server.js",
+    "dev-server": "concurrently \"npm run dev-server-fe\" \"npm run dev-server-be\"",
     "test": "cross-env NODE_ENV=test jest --config=jest.config.json",
     "start": "node server/server.js",
     "heroku-postbuild": "npm run build:prod"
@@ -25,6 +26,7 @@
     "babel-preset-react": "6.24.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
     "css-loader": "0.28.4",
     "express": "4.15.4",
     "extract-text-webpack-plugin": "3.0.0",
