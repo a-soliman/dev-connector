@@ -199,4 +199,82 @@ router.post(
   }
 );
 
+/*
+    @route      Post api/posts/like/:post_id
+    @desc       Addes a like to a post
+    @access     Private
+*/
+router.post(
+  "/like/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.notFound = "Post not found";
+          return res.status(404).json(errors);
+        }
+        // verify if the user did like the post previously
+        const likedBefore = post.likes.filter(like => {
+          return (like.user = req.user.id);
+        });
+
+        if (likedBefore.length > 0) {
+          errors.likedBefore = "Current user already liked this post.";
+          return res.status(400).json(errors);
+        }
+
+        // add the user id to the likes array
+        post.likes.unshift({ user: req.user.id });
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
+/*
+    @route      Post api/posts/unlike/:post_id
+    @desc       removes a like to a post
+    @access     Private
+*/
+router.post(
+  "/unlike/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.notFound = "Post not found";
+          return res.status(404).json(errors);
+        }
+        // verify if the user did like the post previously
+        const likedBefore = post.likes.filter(like => {
+          return (like.user = req.user.id);
+        });
+
+        if (likedBefore.length < 1) {
+          errors.likedBefore = "Current user didn't liked this post.";
+          return res.status(400).json(errors);
+        }
+
+        // remove the user id from the likes array
+        post.likes = post.likes.filter(post => {
+          return ObjectId(post.user).toString() !== req.user.id;
+        });
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
 module.exports = router;
