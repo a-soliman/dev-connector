@@ -10,6 +10,7 @@ const User = require("../../models/User");
 
 /* LOAD INPUT VALIDATION */
 const validatePostInput = require("../../validation/post");
+const validateCommentInput = require("../../validation/comment");
 
 /*
     @route      GET api/posts/test
@@ -260,7 +261,7 @@ router.post(
         });
 
         if (likedBefore.length < 1) {
-          errors.likedBefore = "Current user didn't liked this post.";
+          errors.alreadyLiked = "Current user didn't liked this post.";
           return res.status(400).json(errors);
         }
 
@@ -268,6 +269,41 @@ router.post(
         post.likes = post.likes.filter(post => {
           return ObjectId(post.user).toString() !== req.user.id;
         });
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => {
+        errors.serverError = "Internal server error.";
+        res.status(500).json(errors);
+      });
+  }
+);
+
+/*
+    @route      Post api/posts/comment/:post_id
+    @desc       Addes a comment to a post
+    @access     Private
+*/
+router.post(
+  "/comment/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    /* VALIDATE INPUTS */
+    const { errors, isValid } = validateCommentInput(req.body);
+    if (!isValid) return res.status(400).json(errors);
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        if (!post) {
+          errors.notFound = "Post not found";
+          return res.status(404).json(errors);
+        }
+        const newComment = {
+          text: req.body.text,
+          name: req.body.name,
+          avatar: req.body.avatar,
+          user: req.user.id
+        };
+        post.comments.unshift(newComment);
         post.save().then(post => res.json(post));
       })
       .catch(err => {
