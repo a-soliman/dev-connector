@@ -31,7 +31,6 @@ const AppRouter = () => (
         />
         <PublicRoute path="/register" component={Register} exact={true} />
         <PublicRoute path="/login" component={Login} exact={true} />
-        <PrivateRoute path="/dashboard" component={DashboardPage} />
         <Route component={NotFoundPage} />
       </Switch>
       <Footer />
