@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import Axios from "axios";
+// import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { register } from '../../actions/auth';
 
 class Register extends Component {
   state = {
@@ -48,6 +50,12 @@ class Register extends Component {
     errors: {}
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.errors) {
+      this.attachErrorsToState({ ...nextProps.errors });
+    }
+  };
+
   onFormUpdate = event => {
     const newFormData = { ...this.state.formData };
     const element = event.target.name;
@@ -61,13 +69,23 @@ class Register extends Component {
 
   attachErrorsToState = (errors) => {
     const formData = { ...this.state.formData };
+    const otherErrors = { ...this.state.errors };
+
     for (const field in formData) {
       if (errors[field]) {
         formData[field].valid = false;
         formData[field].validationMessage = errors[field];
+      } else {
+        formData[field].valid = true;
+        formData[field].validationMessage = "";
       }
+      delete errors[field];
     };
-    this.setState({ formData });
+    for (const field in errors) {
+      otherErrors[field] = errors[field];
+    };
+
+    this.setState({ formData, errors: otherErrors });
   }
 
   onFormSubmit = event => {
@@ -79,10 +97,8 @@ class Register extends Component {
     for (const field in this.state.formData) {
       newUserData[field] = this.state.formData[field].value;
     }
-    /* SEND TO THE API */
-    Axios.post("/api/users/register", newUserData)
-      .then(res => console.log(res.data))
-      .catch(err => this.attachErrorsToState(err.response.data));
+
+    this.props.register(newUserData);
   };
 
   render() {
@@ -165,4 +181,13 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  register: userData => dispatch(register(userData))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
