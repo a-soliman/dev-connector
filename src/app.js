@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import AppRouter, { history } from "./routers/AppRouter";
 import configureStore from "./store/configureStore";
+import jwt_decode from 'jwt-decode';
+import setAuthToken from './utils/setAuthToken';
+import { setCurrentUser } from './actions/auth';
 import { login, logout } from "./actions/auth";
 import "normalize.css/normalize.css";
 import "./styles/styles.scss";
@@ -23,6 +26,27 @@ const jsx = (
     <AppRouter />
   </Provider>
 );
+
+/* CHECK IF A USER IS LOGGED IN */
+if (localStorage.jwtToken) {
+  // set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+  // decode token and get user info and exp.
+  const decoded = jwt_decode(localStorage.jwtToken);
+  // set user and is authenticated in redux state
+  store.dispatch(setCurrentUser(decoded));
+
+  // Check for expired token
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    store.dispatch(logout());
+    // TODO: Clear current profile
+
+    // Redirect to /Login
+    history.push('/login');
+  }
+}
+
 let hasRendered = false;
 const renderApp = () => {
   if (!hasRendered) {
@@ -31,19 +55,5 @@ const renderApp = () => {
   }
 };
 
+ReactDOM.render(<LoadingPage />, document.getElementById("app"));
 renderApp();
-// ReactDOM.render(<LoadingPage />, document.getElementById("app"));
-
-// firebase.auth().onAuthStateChanged(user => {
-//   if (user) {
-//     store.dispatch(login(user.uid));
-//     renderApp();
-//     if (history.location.pathname === "/") {
-//       history.push("/dashboard");
-//     }
-//   } else {
-//     store.dispatch(logout());
-//     renderApp();
-//     history.push("/");
-//   }
-// });
