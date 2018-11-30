@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import classnames from 'classnames';
 
 class Register extends Component {
   state = {
@@ -58,6 +59,17 @@ class Register extends Component {
     });
   };
 
+  attachErrorsToState = (errors) => {
+    const formData = { ...this.state.formData };
+    for (const field in formData) {
+      if (errors[field]) {
+        formData[field].valid = false;
+        formData[field].validationMessage = errors[field];
+      }
+    };
+    this.setState({ formData });
+  }
+
   onFormSubmit = event => {
     event.preventDefault();
 
@@ -68,9 +80,9 @@ class Register extends Component {
       newUserData[field] = this.state.formData[field].value;
     }
     /* SEND TO THE API */
-    Axios.post("/api/users/register", newUserData).then(res =>
-      console.log(res.data)
-    );
+    Axios.post("/api/users/register", newUserData)
+      .then(res => console.log(res.data))
+      .catch(err => this.attachErrorsToState(err.response.data));
   };
 
   render() {
@@ -91,20 +103,27 @@ class Register extends Component {
                     type={name.type}
                     value={name.value}
                     onChange={this.onFormUpdate}
-                    className="form-control form-control-lg"
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': name.validationMessage
+                    })}
                     placeholder="Name"
                     name="name"
                   />
+                  {name.validationMessage && (<div className="invalid-feedback">{name.validationMessage}</div>)}
+
                 </div>
                 <div className="form-group">
                   <input
                     type={email.type}
                     value={email.value}
                     onChange={this.onFormUpdate}
-                    className="form-control form-control-lg"
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': email.validationMessage
+                    })}
                     placeholder="Email Address"
                     name="email"
                   />
+                  {email.validationMessage && (<div className="invalid-feedback">{email.validationMessage}</div>)}
                   <small className="form-text text-muted">
                     This site uses Gravatar so if you want a profile image, use
                     a Gravatar email
@@ -115,20 +134,26 @@ class Register extends Component {
                     type={password.type}
                     value={password.value}
                     onChange={this.onFormUpdate}
-                    className="form-control form-control-lg"
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': password.validationMessage
+                    })}
                     placeholder="Password"
                     name="password"
                   />
+                  {password.validationMessage && (<div className="invalid-feedback">{password.validationMessage}</div>)}
                 </div>
                 <div className="form-group">
                   <input
                     type={passwordConfirmation.type}
                     value={passwordConfirmation.value}
                     onChange={this.onFormUpdate}
-                    className="form-control form-control-lg"
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': passwordConfirmation.validationMessage
+                    })}
                     placeholder="Confirm Password"
                     name="passwordConfirmation"
                   />
+                  {passwordConfirmation.validationMessage && (<div className="invalid-feedback">{passwordConfirmation.validationMessage}</div>)}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
