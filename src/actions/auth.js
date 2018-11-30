@@ -1,25 +1,50 @@
 // import { firebase, googleAuthProvider } from '../firebase/firebase';
-import Axios from "axios";
-import { GET_ERRORS } from './types';
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { GET_ERRORS, SET_CURRENT_USER } from './types';
 import { history } from "../routers/AppRouter";
+import setAuthToken from '../utils/setAuthToken';
 
 export const register = (userData) => (dispatch) => {
 
   /* SEND TO THE API */
-  Axios.post("/api/users/register", userData)
+  axios.post("/api/users/register", userData)
     .then(res => history.push('/login'))
-    .catch(err => {
+    .catch(err =>
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
-    });
+      }));
 };
 
-export const login = (uid) => ({
-  type: 'LOGIN',
-  uid
-});
+export const login = userData => dispatch => {
+  axios.post("/api/users/login", userData)
+    .then(res => {
+      // Save to localStorage
+      const { token } = res.data;
+      localStorage.setItem('jwtToken', token);
+      // Set token to auth header
+      setAuthToken(token);
+
+      // Decode token
+      const decoded = jwt_decode(token);
+      // Set current user
+      dispatch(setCurrentUser(decoded));
+
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      }));
+}
+
+export const setCurrentUser = (decoded) => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: decoded
+  };
+}
 
 export const startLogin = () => {
   return () => {
@@ -27,9 +52,16 @@ export const startLogin = () => {
   };
 };
 
-export const logout = () => ({
-  type: 'LOGOUT'
-});
+export const logout = () => {
+  // remove token from  localStorage
+  localStorage.removeItem('jwtToken');
+  // remove token from auth header
+  setAuthToken();
+  history.push('/');
+  return {
+    type: 'LOGOUT'
+  };
+}
 
 export const startLogout = () => {
   return () => {
