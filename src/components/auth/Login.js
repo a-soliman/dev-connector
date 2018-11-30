@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import { login } from '../../actions/auth';
 
 class Login extends Component {
   state = {
@@ -27,6 +29,40 @@ class Login extends Component {
     errors: {}
   };
 
+  componentDidMount = () => {
+    if (this.props.auth.isAuthenticated) this.props.history.push("/dashboard");
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+    if (nextProps.errors) {
+      this.attachErrorsToState({ ...nextProps.errors });
+    }
+  };
+
+  attachErrorsToState = (errors) => {
+    const formData = { ...this.state.formData };
+    const otherErrors = { ...this.state.errors };
+
+    for (const field in formData) {
+      if (errors[field]) {
+        formData[field].valid = false;
+        formData[field].validationMessage = errors[field];
+      } else {
+        formData[field].valid = true;
+        formData[field].validationMessage = "";
+      }
+      delete errors[field];
+    };
+    for (const field in errors) {
+      otherErrors[field] = errors[field];
+    };
+
+    this.setState({ formData, errors: otherErrors });
+  }
+
   onFormUpdate = event => {
     const newFormData = { ...this.state.formData };
     const element = event.target.name;
@@ -48,7 +84,7 @@ class Login extends Component {
       userData[field] = this.state.formData[field].value;
     }
 
-    // axios.post('/api/users/register', userD)
+    this.props.login(userData);
   };
   render() {
     const { email, password } = this.state.formData;
@@ -67,20 +103,26 @@ class Login extends Component {
                     type={email.type}
                     value={email.value}
                     onChange={this.onFormUpdate}
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-control-lg", {
+                      'is-invalid': email.validationMessage
+                    })}
                     placeholder="Email Address"
                     name="email"
                   />
+                  {email.validationMessage && (<div className="invalid-feedback">{email.validationMessage}</div>)}
                 </div>
                 <div className="form-group">
                   <input
                     type={password.type}
                     value={password.value}
                     onChange={this.onFormUpdate}
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-control-lg", {
+                      'is-invalid': password.validationMessage
+                    })}
                     placeholder="Password"
                     name="password"
                   />
+                  {password.validationMessage && (<div className="invalid-feedback">{password.validationMessage}</div>)}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
@@ -92,4 +134,13 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: userData => dispatch(login(userData))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
