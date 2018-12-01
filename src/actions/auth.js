@@ -17,6 +17,18 @@ export const register = (userData) => (dispatch) => {
       }));
 };
 
+export const googleLogin = token => dispatch => {
+  // Save to localStorage
+  localStorage.setItem('jwtToken', token);
+  // Set token to auth header
+  setAuthToken(token);
+
+  const decoded = jwt_decode(token);
+  // Set current user
+  dispatch(setCurrentUser(decoded));
+  history.push('/dashboard');
+}
+
 export const login = userData => dispatch => {
   axios.post("/api/users/login", userData)
     .then(res => {
