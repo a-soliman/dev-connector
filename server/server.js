@@ -31,6 +31,7 @@ app.use(express.static(publicPath));
 /* PASSPORT AUTHENTICATION CONFIGURATION */
 app.use(passport.initialize());
 require("./config/passport")(passport);
+require("./config/passport_google")(passport);
 
 /* USE ROUTES */
 app.use("/api/users", users);
