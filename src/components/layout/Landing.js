@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
+import { googleLogin } from '../../actions/auth';
 
 class Landing extends Component {
 
   componentDidMount = () => {
     if (this.props.auth.isAuthenticated) this.props.history.push("/dashboard");
+    if (this.props.location.search.length > 0) {
+      this.props.googleLogin(this.props.location.search);
+    }
   }
 
   render() {
@@ -28,6 +32,7 @@ class Landing extends Component {
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
+                <a href="/api/users/google">Google</a>
               </div>
             </div>
           </div>
@@ -37,8 +42,12 @@ class Landing extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  googleLogin: token => dispatch(googleLogin(token))
+})
+
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(Landing);
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);
