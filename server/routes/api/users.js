@@ -107,6 +107,33 @@ router.post("/login", (req, res) => {
 });
 
 /*
+    @route      GET api/users/google
+    @desc       Startes Google Authentication
+    @access     Public
+*/
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ['email', 'profile'] })
+);
+
+/*
+    @route      GET api/users/google/redirect
+    @desc       Redirects to home after an authentication process
+    @access     Public
+*/
+router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
+  let user = req.user;
+  const payload = { id: user.id, name: user.name, avatar: user.avatar };
+  jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+    if (err) {
+      errors.serverError = "Internal server error.";
+      return res.status(500).json(errors);
+    }
+    res.redirect('/' + `?token=Bearer ${token}`)
+  });
+});
+
+/*
     @route      GET api/users/current
     @desc       Return current user
     @input      JWT Token
