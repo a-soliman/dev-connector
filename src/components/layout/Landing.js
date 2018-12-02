@@ -33,10 +33,7 @@ class Landing extends Component {
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
-                <br />
-                <br />
-                <div className="text-white rounded-circle border border-info or">Or</div>
-                <br />
+                <div className="text-white rounded-circle border border-info my-5 or">Or</div>
                 <GoogleButton link="/api/users/google" text="Login with Google" />
               </div>
             </div>

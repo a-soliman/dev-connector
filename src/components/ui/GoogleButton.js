@@ -7,7 +7,7 @@ import React from 'react';
 */
 const GoogleButton = ({ link, text }) => {
     return (
-        <div>
+        <div style={{ textAlign: 'center' }}>
             <a
                 className="btn btn-lg loginBtn btn loginBtn loginBtn--google"
                 href={link}>

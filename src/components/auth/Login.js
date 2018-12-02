@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { login } from '../../actions/auth';
+import GoogleButton from '../ui/GoogleButton';
 
 class Login extends Component {
   state = {
@@ -126,6 +127,9 @@ class Login extends Component {
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
+
+              <div className="text-info rounded-circle border border-info my-5 or">Or</div>
+              <GoogleButton link="/api/users/google" text="Login with Google" />
             </div>
           </div>
         </div>
