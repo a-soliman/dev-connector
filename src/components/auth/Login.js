@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { login } from '../../actions/auth';
+import Form from '../ui/Form';
 import GoogleButton from '../ui/GoogleButton';
 
 class Login extends Component {
@@ -9,8 +10,10 @@ class Login extends Component {
     loading: false,
     formData: {
       email: {
+        name: "email",
         value: "",
         type: "email",
+        placeholder: "Email Address",
         validation: {
           required: true
         },
@@ -18,8 +21,10 @@ class Login extends Component {
         validationMessage: ""
       },
       password: {
+        name: "password",
         value: "",
         type: "password",
+        placeholder: "Password",
         validation: {
           required: true
         },
@@ -98,35 +103,11 @@ class Login extends Component {
               <p className="lead text-center">
                 Sign in to your DevConnector account
               </p>
-              <form onSubmit={this.onFormSubmit}>
-                <div className="form-group">
-                  <input
-                    type={email.type}
-                    value={email.value}
-                    onChange={this.onFormUpdate}
-                    className={classnames("form-control form-control-lg", {
-                      'is-invalid': email.validationMessage
-                    })}
-                    placeholder="Email Address"
-                    name="email"
-                  />
-                  {email.validationMessage && (<div className="invalid-feedback">{email.validationMessage}</div>)}
-                </div>
-                <div className="form-group">
-                  <input
-                    type={password.type}
-                    value={password.value}
-                    onChange={this.onFormUpdate}
-                    className={classnames("form-control form-control-lg", {
-                      'is-invalid': password.validationMessage
-                    })}
-                    placeholder="Password"
-                    name="password"
-                  />
-                  {password.validationMessage && (<div className="invalid-feedback">{password.validationMessage}</div>)}
-                </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
+              <Form
+                fields={[email, password]}
+                onChangleHandler={this.onFormUpdate}
+                onSubmitHandler={this.onFormSubmit}
+              />
 
               <div className="text-info rounded-circle border border-info my-5 or">Or</div>
               <GoogleButton link="/api/users/google" text="Login with Google" />

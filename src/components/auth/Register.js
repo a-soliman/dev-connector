@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { register } from '../../actions/auth';
 import GoogleButton from '../ui/GoogleButton';
+import Form from '../ui/Form';
 
 class Register extends Component {
   state = {
@@ -10,6 +11,7 @@ class Register extends Component {
     loading: false,
     formData: {
       name: {
+        name: "name",
         value: "",
         type: "text",
         placeholder: "Name",
@@ -20,8 +22,10 @@ class Register extends Component {
         validationMessage: ""
       },
       email: {
+        name: "email",
         value: "",
         type: "email",
+        placeholder: "Email Address",
         validation: {
           required: true
         },
@@ -29,8 +33,10 @@ class Register extends Component {
         validationMessage: ""
       },
       password: {
+        name: "password",
         value: "",
         type: "password",
+        placeholder: "Password",
         validation: {
           required: true
         },
@@ -38,8 +44,10 @@ class Register extends Component {
         validationMessage: ""
       },
       passwordConfirmation: {
+        name: "passwordConfirmation",
         value: "",
         type: "password",
+        placeholder: "Confirm Password",
         validation: {
           required: true
         },
@@ -64,6 +72,7 @@ class Register extends Component {
     const newFormData = { ...this.state.formData };
     const element = event.target.name;
     const value = event.target.value;
+    console.log(event.target)
     newFormData[element].value = value;
 
     this.setState({
@@ -117,66 +126,11 @@ class Register extends Component {
               <p className="lead text-center">
                 Create your DevConnector account
               </p>
-              <form onSubmit={this.onFormSubmit}>
-                <div className="form-group">
-                  <input
-                    type={name.type}
-                    value={name.value}
-                    onChange={this.onFormUpdate}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': name.validationMessage
-                    })}
-                    placeholder="Name"
-                    name="name"
-                  />
-                  {name.validationMessage && (<div className="invalid-feedback">{name.validationMessage}</div>)}
-
-                </div>
-                <div className="form-group">
-                  <input
-                    type={email.type}
-                    value={email.value}
-                    onChange={this.onFormUpdate}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': email.validationMessage
-                    })}
-                    placeholder="Email Address"
-                    name="email"
-                  />
-                  {email.validationMessage && (<div className="invalid-feedback">{email.validationMessage}</div>)}
-                  <small className="form-text text-muted">
-                    This site uses Gravatar so if you want a profile image, use
-                    a Gravatar email
-                  </small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type={password.type}
-                    value={password.value}
-                    onChange={this.onFormUpdate}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': password.validationMessage
-                    })}
-                    placeholder="Password"
-                    name="password"
-                  />
-                  {password.validationMessage && (<div className="invalid-feedback">{password.validationMessage}</div>)}
-                </div>
-                <div className="form-group">
-                  <input
-                    type={passwordConfirmation.type}
-                    value={passwordConfirmation.value}
-                    onChange={this.onFormUpdate}
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': passwordConfirmation.validationMessage
-                    })}
-                    placeholder="Confirm Password"
-                    name="passwordConfirmation"
-                  />
-                  {passwordConfirmation.validationMessage && (<div className="invalid-feedback">{passwordConfirmation.validationMessage}</div>)}
-                </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
+              <Form
+                fields={[name, email, password, passwordConfirmation]}
+                onChangleHandler={this.onFormUpdate}
+                onSubmitHandler={this.onFormSubmit}
+              />
               <div className="text-info rounded-circle border border-info my-5 or">Or</div>
               <GoogleButton link="/api/users/google" text="Sign up with Google" />
             </div>
