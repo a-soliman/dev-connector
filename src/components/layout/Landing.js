@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { googleLogin } from '../../actions/auth';
+import GoogleButton from '../ui/GoogleButton';
 
 class Landing extends Component {
 
@@ -32,7 +33,11 @@ class Landing extends Component {
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
-                <a href="/api/users/google">Google</a>
+                <br />
+                <br />
+                <div className="text-white rounded-circle border border-info or">Or</div>
+                <br />
+                <GoogleButton link="/api/users/google" text="Login with Google" />
               </div>
             </div>
           </div>
