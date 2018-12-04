@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import AppRouter, { history } from "./routers/AppRouter";
 import configureStore from "./store/configureStore";
-import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './actions/auth';
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+import { setCurrentUser } from "./actions/auth";
 import { login, logout } from "./actions/auth";
+import { clearCurrentProfile } from "./actions/profile";
 import "normalize.css/normalize.css";
 import "./styles/styles.scss";
 import "react-dates/lib/css/_datepicker.css";
@@ -40,10 +41,11 @@ if (localStorage.jwtToken) {
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     store.dispatch(logout());
-    // TODO: Clear current profile
+    // Clear current profile
+    store.dispatch(clearCurrentProfile());
 
     // Redirect to /Login
-    history.push('/login');
+    history.push("/login");
   }
 }
 
