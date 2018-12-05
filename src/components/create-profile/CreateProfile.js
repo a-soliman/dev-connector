@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { createProfile } from "../../actions/profile";
 import Form from "../ui/Form";
 
 class CreateProfile extends Component {
   state = {
+    loading: false,
     displaySocialInputs: false,
     formData: {
       handle: {
@@ -182,12 +184,54 @@ class CreateProfile extends Component {
     }
   };
 
-  onFormSubmit = event => {
-    event.preventDefault();
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.attachErrorsToState({ ...nextProps.errors });
+    }
+  };
+
+  attachErrorsToState = errors => {
+    const formData = { ...this.state.formData };
+    const otherErrors = { ...this.state.errors };
+
+    for (const field in formData) {
+      if (errors[field]) {
+        formData[field].valid = false;
+        formData[field].validationMessage = errors[field];
+      } else {
+        formData[field].valid = true;
+        formData[field].validationMessage = "";
+      }
+      delete errors[field];
+    }
+    for (const field in errors) {
+      otherErrors[field] = errors[field];
+    }
+
+    this.setState({ formData, errors: otherErrors });
   };
 
   onFormUpdate = event => {
-    console.log("update.");
+    const newFormData = { ...this.state.formData };
+    const element = event.target.name;
+    const value = event.target.value;
+    newFormData[element].value = value;
+
+    this.setState({
+      formData: newFormData
+    });
+  };
+  onFormSubmit = event => {
+    event.preventDefault();
+
+    /* VALIDATE DATA */
+
+    const newProfile = {};
+    for (const field in this.state.formData) {
+      newProfile[field] = this.state.formData[field].value;
+    }
+
+    this.props.createProfile(newProfile);
   };
 
   render() {
@@ -246,8 +290,14 @@ class CreateProfile extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-const mapDispatchToProps = dispatch => ({});
+const mapStateToProps = state => ({
+  profile: state.profile,
+  auth: state.auth,
+  errors: state.errors
+});
+const mapDispatchToProps = dispatch => ({
+  createProfile: profileData => dispatch(createProfile(profileData))
+});
 
 export default connect(
   mapStateToProps,
