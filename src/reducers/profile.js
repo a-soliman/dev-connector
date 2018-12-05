@@ -3,7 +3,8 @@ import {
   PROFILE_LOADING,
   PROFILE_NOT_FOUND,
   CLEAR_CURRENT_PROFILE,
-  GET_PROFILES
+  GET_PROFILES,
+  CREATE_PROFILE
 } from "../actions/types";
 
 import isEmpty from "../validation/is-empty";
@@ -39,6 +40,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         profiles: action.payload,
+        loading: false
+      };
+
+    case CREATE_PROFILE:
+      return {
+        ...state,
+        profile: action.payload,
         loading: false
       };
 
