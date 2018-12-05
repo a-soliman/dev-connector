@@ -28,7 +28,7 @@ const FormField = ({ field, onChangeHandler }) => {
       if (field.icon === "linkedin") icon = faLinkedin;
       if (field.icon === "github") icon = faGithub;
       if (field.icon === "instagram") icon = faInstagram;
-      console.log("inputGroup");
+
       template = (
         <div className="input-group mb-3">
           <div className="input-group-prepend">
@@ -50,12 +50,14 @@ const FormField = ({ field, onChangeHandler }) => {
     if (field.type === "select") {
       template = (
         <select
+          name={field.name}
           value={field.value}
           onChange={onChangeHandler}
           className={classnames("form-control form-control-lg", {
             "is-invalid": field.validationMessage
           })}
         >
+          <option value="">Select one...</option>
           {field.options.map(option => (
             <option key={option} value={option}>
               {option}
