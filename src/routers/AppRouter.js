@@ -1,6 +1,7 @@
 import React from "react";
 import { Router, Route, Switch, Link, NavLink } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
+
 /* LAYOUT COMPONENTS */
 import Navbar from "../components/layout/Navbar";
 import Landing from "../components/layout/Landing";
@@ -10,10 +11,14 @@ import Footer from "../components/layout/Footer";
 import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
 
+/* DASHBOARD COMPONENTS */
 import Dashboard from "../components/dashboard/Dashboard";
 
 /* PROFILE COMPONENTS */
 import CreateProfile from "../components/create-profile/CreateProfile";
+import EditProfile from "../components/dashboard/EditProfile";
+import AddExperience from "../components/dashboard/AddExperience";
+import AddEducation from "../components/dashboard/AddEducation";
 
 import NotFoundPage from "../components/NotFoundPage";
 import LoginPage from "../components/LoginPage";
@@ -37,6 +42,21 @@ const AppRouter = () => (
         <PublicRoute path="/login" component={Login} exact={true} />
 
         <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
+        <PrivateRoute
+          path="/edit-profile"
+          component={EditProfile}
+          exact={true}
+        />
+        <PrivateRoute
+          path="/add-experience"
+          component={AddExperience}
+          exact={true}
+        />
+        <PrivateRoute
+          path="/add-education"
+          component={AddEducation}
+          exact={true}
+        />
         <PrivateRoute
           path="/create-profile"
           component={CreateProfile}
