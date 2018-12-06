@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { getCurrentProfile } from "../../actions/profile";
+import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 import Spinner from "../ui/Spinner";
+import ProfileActions from "./ProfileActions";
 
 class Dashboard extends Component {
   componentDidMount = () => {
     const profile = this.props.getCurrentProfile();
+  };
+
+  onDeleteAccount = () => {
+    this.props.deleteAccount();
   };
 
   render() {
@@ -19,7 +24,21 @@ class Dashboard extends Component {
       dashboardContent = <Spinner />;
     } else {
       if (Object.keys(profile).length > 0) {
-        dashboardContent = <h4>TODO : Display Profile</h4>;
+        dashboardContent = (
+          <div>
+            <p className="lead text-muted">
+              Welcome <Link to={`profile/${profile.handle}`}>{user.name}</Link>
+            </p>
+            <ProfileActions />
+            {/* TODO: exp and edu */}
+
+            <div style={{ marginBottom: "60px" }}>
+              <button className="btn btn-danger" onClick={this.onDeleteAccount}>
+                Delete My Account
+              </button>
+            </div>
+          </div>
+        );
       } else {
         dashboardContent = (
           <div>
@@ -54,7 +73,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCurrentProfile: () => dispatch(getCurrentProfile())
+  getCurrentProfile: () => dispatch(getCurrentProfile()),
+  deleteAccount: () => dispatch(deleteAccount())
 });
 
 export default connect(
