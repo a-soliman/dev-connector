@@ -4,12 +4,12 @@ import {
   Get_PROFILE,
   PROFILE_LOADING,
   CREATE_PROFILE,
+  EDIT_PROFILE,
   GET_ERRORS,
   CLEAR_CURRENT_PROFILE,
   DELETE_ACCOUNT,
   SET_CURRENT_USER
 } from "./types";
-import CreateProfile from "../components/create-profile/CreateProfile";
 
 /* GET CURRENT PROFILE */
 export const getCurrentProfile = () => dispatch => {
@@ -62,8 +62,28 @@ export const createProfile = profileData => dispatch => {
       })
     );
 };
+/* EDIT PROFILE */
+export const editProfile = profileData => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .post("/api/profile", profileData)
+    .then(res => {
+      dispatch({
+        type: EDIT_PROFILE,
+        payload: res.data,
+        loading: false
+      });
+      history.push("/dashboard");
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
 
-/* CREATE PROFILE */
+/* DELETE ACCOUNT */
 export const deleteAccount = () => dispatch => {
   if (!window.confirm("Are you sure? This can not be undone!")) {
     return;
