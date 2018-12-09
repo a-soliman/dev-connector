@@ -16,6 +16,11 @@ export class Navbar extends React.Component {
     const authLinkes = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
+          <Link to="/dashboard" className="nav-link">
+            Dashboard
+          </Link>
+        </li>
+        <li className="nav-item">
           <a className="nav-link" href="#" onClick={this.onLogoutHandler}>
             <img
               className="rounded-circle"
