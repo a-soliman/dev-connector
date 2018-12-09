@@ -83,11 +83,30 @@ const FormField = ({ field, onChangeHandler }) => {
       );
     }
 
+    if (field.type === "checkbox") {
+      template = (
+        <input
+          type={field.type}
+          value={field.value}
+          name={field.name}
+          onChange={onChangeHandler}
+          placeholder={field.placeholder}
+          className="form-check-input"
+          id={field.name}
+          style={{
+            position: "static",
+            marginLeft: "1rem"
+          }}
+        />
+      );
+    }
+
     if (
       field.type === "text" ||
       field.type === "email" ||
       field.type === "number" ||
-      field.type === "password"
+      field.type === "password" ||
+      field.type === "date"
     ) {
       template = (
         <input
@@ -99,6 +118,7 @@ const FormField = ({ field, onChangeHandler }) => {
           className={classnames("form-control form-control-lg", {
             "is-invalid": field.validationMessage
           })}
+          disabled={field.disabled && field.disabled == true ? true : false}
         />
       );
     }
@@ -107,7 +127,9 @@ const FormField = ({ field, onChangeHandler }) => {
 
   return (
     <div className="form-group">
+      {field.label ? <label htmlFor={field.name}>{field.label}</label> : null}
       {generateInputField()}
+
       {field.instructions
         ? generateFieldInstructions(field.instructions)
         : null}
