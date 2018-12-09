@@ -4,7 +4,9 @@ import {
   PROFILE_NOT_FOUND,
   CLEAR_CURRENT_PROFILE,
   GET_PROFILES,
-  CREATE_PROFILE
+  CREATE_PROFILE,
+  ADD_EXPERIENCE,
+  ADD_EDUCATION
 } from "../actions/types";
 
 import isEmpty from "../validation/is-empty";
@@ -44,6 +46,20 @@ export default (state = initialState, action) => {
       };
 
     case CREATE_PROFILE:
+      return {
+        ...state,
+        profile: action.payload,
+        loading: false
+      };
+
+    case ADD_EXPERIENCE:
+      return {
+        ...state,
+        profile: action.payload,
+        loading: false
+      };
+
+    case ADD_EDUCATION:
       return {
         ...state,
         profile: action.payload,
