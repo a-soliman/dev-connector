@@ -147,12 +147,13 @@ router.post(
     }
     /* SOCIAL LINKS */
     profileFields.social = {};
+    console.log(req.body);
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
-
+    console.log(profileFields);
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         // UPDATE
