@@ -207,6 +207,16 @@ class EditProfile extends Component {
 
   generateStateValuesFromProfile = profile => {
     const newFormData = { ...this.state.formData };
+
+    // attach the social links
+    if (profile.social && Object.keys(profile.social).length > 0) {
+      for (const socialField in profile.social) {
+        if (newFormData[socialField]) {
+          newFormData[socialField].value = profile.social[socialField];
+        }
+      }
+    }
+    // handle the rest of the input fields
     for (const field in profile) {
       if (newFormData[field]) {
         newFormData[field].value = profile[field];
