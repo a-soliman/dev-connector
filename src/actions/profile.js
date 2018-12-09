@@ -11,7 +11,8 @@ import {
   SET_CURRENT_USER,
   ADD_EXPERIENCE,
   DELETE_EXPERIENCE,
-  ADD_EDUCATION
+  ADD_EDUCATION,
+  DELETE_EDUCATION
 } from "./types";
 
 /* GET CURRENT PROFILE */
@@ -127,6 +128,7 @@ export const addExperience = newExperience => dispatch => {
       })
     );
 };
+
 /* DELETE_EXPERIENCE */
 export const deleteExperience = id => dispatch => {
   if (!window.confirm("Are you sure? this can NOT be undone!")) return;
@@ -139,7 +141,6 @@ export const deleteExperience = id => dispatch => {
         type: DELETE_EXPERIENCE,
         payload: res.data
       });
-      history.push("/dashboard");
     })
     .catch(err =>
       dispatch({
@@ -168,4 +169,25 @@ export const addEducation = newEducation => dispatch => {
         payload: err.response.data
       });
     });
+};
+
+/* DELETE_EDUCATION */
+export const deleteEducation = id => dispatch => {
+  if (!window.confirm("Are you sure? this can NOT be undone!")) return;
+
+  dispatch(setProfileLoading());
+  axios
+    .delete(`api/profile/education/${id}`)
+    .then(res => {
+      dispatch({
+        type: DELETE_EDUCATION,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 };

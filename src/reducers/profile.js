@@ -7,7 +7,8 @@ import {
   CREATE_PROFILE,
   ADD_EXPERIENCE,
   DELETE_EXPERIENCE,
-  ADD_EDUCATION
+  ADD_EDUCATION,
+  DELETE_EDUCATION
 } from "../actions/types";
 
 import isEmpty from "../validation/is-empty";
@@ -68,6 +69,13 @@ export default (state = initialState, action) => {
       };
 
     case ADD_EDUCATION:
+      return {
+        ...state,
+        profile: action.payload,
+        loading: false
+      };
+
+    case DELETE_EDUCATION:
       return {
         ...state,
         profile: action.payload,
