@@ -8,7 +8,9 @@ import {
   GET_ERRORS,
   CLEAR_CURRENT_PROFILE,
   DELETE_ACCOUNT,
-  SET_CURRENT_USER
+  SET_CURRENT_USER,
+  ADD_EXPERIENCE,
+  ADD_EDUCATION
 } from "./types";
 
 /* GET CURRENT PROFILE */
@@ -103,4 +105,45 @@ export const deleteAccount = () => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+/* ADD_EXPERIENCE */
+export const addExperience = newExperience => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .post("api/profile/experience", newExperience)
+    .then(res => {
+      dispatch({
+        type: ADD_EXPERIENCE,
+        payload: res.data
+      });
+      history.push("/dashboard");
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+/* ADD_EDUCATION */
+export const addEducation = newEducation => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .post("api/profile/education", newEducation)
+    .then(res => {
+      dispatch({
+        type: ADD_EDUCATION,
+        payload: res.data
+      });
+      history.push("/dashboard");
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };
