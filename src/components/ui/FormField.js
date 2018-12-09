@@ -38,6 +38,8 @@ const FormField = ({ field, onChangeHandler }) => {
           </div>
           <input
             type={field.type}
+            value={field.value}
+            onChange={onChangeHandler}
             className="form-control form-control-lg"
             placeholder={field.placeholder}
             name={field.name}
