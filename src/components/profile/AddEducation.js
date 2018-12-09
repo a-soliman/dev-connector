@@ -127,7 +127,6 @@ class AddEducation extends Component {
     newFormData["to"].disabled = !newFormData["to"].disabled;
 
     this.setState({ formData: newFormData });
-    console.log(this.state.formData["to"].disabled);
   };
 
   onFormUpdate = event => {
@@ -154,7 +153,6 @@ class AddEducation extends Component {
     for (const field in this.state.formData) {
       newEducation[field] = this.state.formData[field].value;
     }
-    console.log(newEducation);
     this.props.addEducation(newEducation);
   };
   render() {

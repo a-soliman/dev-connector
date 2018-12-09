@@ -2,6 +2,7 @@ import axios from "axios";
 import { history } from "../routers/AppRouter";
 import {
   Get_PROFILE,
+  Get_PROFILES,
   PROFILE_LOADING,
   CREATE_PROFILE,
   EDIT_PROFILE,
@@ -12,7 +13,8 @@ import {
   ADD_EXPERIENCE,
   DELETE_EXPERIENCE,
   ADD_EDUCATION,
-  DELETE_EDUCATION
+  DELETE_EDUCATION,
+  GET_PROFILES
 } from "./types";
 
 /* GET CURRENT PROFILE */
@@ -31,6 +33,27 @@ export const getCurrentProfile = () => dispatch => {
       dispatch({
         type: Get_PROFILE,
         payload: {},
+        loading: false
+      })
+    );
+};
+
+/* GET PROFILES ARRAY */
+export const getProfiles = () => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get("/api/profile/all")
+    .then(res =>
+      dispatch({
+        type: Get_PROFILES,
+        payload: res.data,
+        loading: false
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: [],
         loading: false
       })
     );

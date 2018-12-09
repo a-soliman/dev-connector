@@ -127,7 +127,6 @@ class AddExperience extends Component {
     newFormData["to"].disabled = !newFormData["to"].disabled;
 
     this.setState({ formData: newFormData });
-    console.log(this.state.formData["to"].disabled);
   };
 
   onFormUpdate = event => {
@@ -154,7 +153,6 @@ class AddExperience extends Component {
     for (const field in this.state.formData) {
       newExperience[field] = this.state.formData[field].value;
     }
-    console.log(newExperience);
     this.props.addExperience(newExperience);
   };
   render() {

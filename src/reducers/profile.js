@@ -1,5 +1,6 @@
 import {
   Get_PROFILE,
+  Get_PROFILES,
   PROFILE_LOADING,
   PROFILE_NOT_FOUND,
   CLEAR_CURRENT_PROFILE,
@@ -40,7 +41,7 @@ export default (state = initialState, action) => {
         loading: false
       };
 
-    case GET_PROFILES:
+    case Get_PROFILES:
       return {
         ...state,
         profiles: action.payload,
