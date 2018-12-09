@@ -110,6 +110,27 @@ export const editProfile = profileData => dispatch => {
     });
 };
 
+/* GET CURRENT PROFILE */
+export const getProfileByHabdle = handle => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get(`/api/profile/handle/${handle}`)
+    .then(res =>
+      dispatch({
+        type: Get_PROFILE,
+        payload: res.data,
+        loading: false
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: Get_PROFILE,
+        payload: {},
+        loading: false
+      })
+    );
+};
+
 /* DELETE ACCOUNT */
 export const deleteAccount = () => dispatch => {
   if (!window.confirm("Are you sure? This can not be undone!")) {

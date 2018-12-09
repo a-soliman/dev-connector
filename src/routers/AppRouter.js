@@ -20,6 +20,7 @@ import EditProfile from "../components/profile/EditProfile";
 import AddExperience from "../components/profile/AddExperience";
 import AddEducation from "../components/profile/AddEducation";
 import Profiles from "../components/profile/Profiles";
+import Profile from "../components/profile/Profile";
 
 import NotFoundPage from "../components/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
@@ -42,6 +43,7 @@ const AppRouter = () => (
         <PublicRoute path="/login" component={Login} exact={true} />
 
         <PublicRoute path="/profiles" component={Profiles} exact={true} />
+        <PublicRoute path="/profile/:handle" component={Profile} exact={true} />
 
         <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
         <PrivateRoute
