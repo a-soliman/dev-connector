@@ -6,6 +6,7 @@ import {
   GET_PROFILES,
   CREATE_PROFILE,
   ADD_EXPERIENCE,
+  DELETE_EXPERIENCE,
   ADD_EDUCATION
 } from "../actions/types";
 
@@ -53,6 +54,13 @@ export default (state = initialState, action) => {
       };
 
     case ADD_EXPERIENCE:
+      return {
+        ...state,
+        profile: action.payload,
+        loading: false
+      };
+
+    case DELETE_EXPERIENCE:
       return {
         ...state,
         profile: action.payload,

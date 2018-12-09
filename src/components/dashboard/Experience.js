@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
+import { deleteExperience } from "../../actions/profile";
 
 class Experience extends Component {
   onDeleteHandler = id => {
-    console.log("Deleting: ", id);
+    this.props.deleteExperience(id);
   };
+
   render() {
     const experience = this.props.experience.map(exp => (
       <tr key={exp._id}>
@@ -25,7 +27,7 @@ class Experience extends Component {
         </td>
       </tr>
     ));
-    console.log(experience);
+
     return (
       <div className="">
         <h4 className="mb-">Experience Credentials</h4>
@@ -46,6 +48,13 @@ class Experience extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({});
+const mapStateToProps = state => ({});
 
-export default connect()(Experience);
+const mapDispatchToProps = dispatch => ({
+  deleteExperience: id => dispatch(deleteExperience(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Experience);

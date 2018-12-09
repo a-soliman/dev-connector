@@ -15,13 +15,12 @@ import Login from "../components/auth/Login";
 import Dashboard from "../components/dashboard/Dashboard";
 
 /* PROFILE COMPONENTS */
-import CreateProfile from "../components/create-profile/CreateProfile";
-import EditProfile from "../components/dashboard/EditProfile";
-import AddExperience from "../components/dashboard/AddExperience";
-import AddEducation from "../components/dashboard/AddEducation";
+import CreateProfile from "../components/profile/CreateProfile";
+import EditProfile from "../components/profile/EditProfile";
+import AddExperience from "../components/profile/AddExperience";
+import AddEducation from "../components/profile/AddEducation";
 
 import NotFoundPage from "../components/NotFoundPage";
-import LoginPage from "../components/LoginPage";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 

@@ -10,6 +10,7 @@ import {
   DELETE_ACCOUNT,
   SET_CURRENT_USER,
   ADD_EXPERIENCE,
+  DELETE_EXPERIENCE,
   ADD_EDUCATION
 } from "./types";
 
@@ -115,6 +116,27 @@ export const addExperience = newExperience => dispatch => {
     .then(res => {
       dispatch({
         type: ADD_EXPERIENCE,
+        payload: res.data
+      });
+      history.push("/dashboard");
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+/* DELETE_EXPERIENCE */
+export const deleteExperience = id => dispatch => {
+  if (!window.confirm("Are you sure? this can NOT be undone!")) return;
+
+  dispatch(setProfileLoading());
+  axios
+    .delete(`api/profile/experience/${id}`)
+    .then(res => {
+      dispatch({
+        type: DELETE_EXPERIENCE,
         payload: res.data
       });
       history.push("/dashboard");
