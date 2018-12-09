@@ -254,10 +254,11 @@ class EditProfile extends Component {
     /* VALIDATE DATA */
 
     const editedProfile = {};
+
     for (const field in this.state.formData) {
       editedProfile[field] = this.state.formData[field].value;
     }
-
+    console.log(editedProfile);
     this.props.editProfile(editedProfile);
   };
 
