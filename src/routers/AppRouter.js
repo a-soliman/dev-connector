@@ -22,6 +22,9 @@ import AddEducation from "../components/profile/AddEducation";
 import Profiles from "../components/profile/Profiles";
 import Profile from "../components/profile/Profile";
 
+/* POST COMPONENTS */
+import Posts from "../components/posts/Posts";
+
 import NotFoundPage from "../components/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
@@ -66,6 +69,8 @@ const AppRouter = () => (
           component={CreateProfile}
           exact={true}
         />
+
+        <PrivateRoute path="/feed" component={Posts} exact={true} />
         <Route component={NotFoundPage} />
       </Switch>
       <Footer />
