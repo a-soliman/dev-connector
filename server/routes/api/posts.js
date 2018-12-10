@@ -45,7 +45,7 @@ router.get("/", (req, res) => {
     @access     Private
 */
 router.get(
-  "/:user_id",
+  "user/:user_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
