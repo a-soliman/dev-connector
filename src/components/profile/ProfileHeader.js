@@ -13,7 +13,6 @@ import {
 class ProfileHeader extends Component {
   render() {
     const { profile } = this.props;
-    console.log(profile);
 
     return (
       <div className="row">
@@ -44,7 +43,7 @@ class ProfileHeader extends Component {
                   <FontAwesomeIcon icon={faGlobe} />
                 </a>
               ) : null}
-              {Object.keys(profile.social).length > 0 ? (
+              {profile.social && Object.keys(profile.social).length > 0 ? (
                 <p>
                   {profile.social.twitter ? (
                     <a className="text-white p-2" href={profile.social.twitter}>
