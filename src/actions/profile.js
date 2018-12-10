@@ -122,13 +122,14 @@ export const getProfileByHabdle = handle => dispatch => {
         loading: false
       })
     )
-    .catch(err =>
+    .catch(err => {
       dispatch({
-        type: Get_PROFILE,
-        payload: {},
+        type: GET_ERRORS,
+        payload: err.response.data,
         loading: false
-      })
-    );
+      });
+      history.push("/not-found");
+    });
 };
 
 /* DELETE ACCOUNT */

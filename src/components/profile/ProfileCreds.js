@@ -38,7 +38,7 @@ class ProfileCreds extends Component {
               <li className="list-group-item" key={edu._id}>
                 <h4>
                   <strong>@ </strong>
-                  {Education.school}
+                  {edu.school}
                 </h4>
                 <p>
                   {moment(edu.from).format("MMM, YYYY")} -

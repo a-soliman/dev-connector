@@ -7,12 +7,14 @@ import ProfileAbout from "./ProfileAbout";
 import ProfileCreds from "./ProfileCreds";
 import ProfileGithub from "./ProfileGithub";
 import { getProfileByHabdle } from "../../actions/profile";
+import isEmpty from "../../validation/is-empty";
 
 class Profile extends Component {
   componentDidMount = () => {
     const handle = this.props.match.params.handle;
     this.props.getProfileByHabdle(handle);
   };
+
   render() {
     const { profile, loading } = this.props.profile;
     let profileTemplate;
@@ -33,7 +35,9 @@ class Profile extends Component {
           <ProfileHeader profile={profile} />
           <ProfileAbout profile={profile} />
           <ProfileCreds profile={profile} />
-          <ProfileGithub profile={profile} />
+          {profile.githubusername ? (
+            <ProfileGithub username={profile.githubusername} />
+          ) : null}
         </div>
       );
     }
