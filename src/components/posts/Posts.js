@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Spinner from "../ui/Spinner";
+import PostFeed from "./PostFeed";
 import Form from "../ui/Form";
-import { addPost } from "../../actions/post";
+import { addPost, getPosts } from "../../actions/post";
 
 class Posts extends Component {
   state = {
@@ -20,6 +21,9 @@ class Posts extends Component {
       }
     },
     errors: {}
+  };
+  componentDidMount = () => {
+    this.props.getPosts();
   };
 
   componentWillReceiveProps = nextProps => {
@@ -74,6 +78,14 @@ class Posts extends Component {
   };
   render() {
     const { text } = this.state.formData;
+    const { posts, loading } = this.props.post;
+    let postTemplate;
+
+    if (posts === null || loading) {
+      postTemplate = <Spinner />;
+    } else {
+      postTemplate = <PostFeed posts={posts} />;
+    }
 
     return (
       <div className="feed">
@@ -86,11 +98,14 @@ class Posts extends Component {
                     Say Something...
                   </div>
                   <div className="card-body">
-                    <Form
-                      fields={[text]}
-                      onChangleHandler={this.onFormUpdate}
-                      onSubmitHandler={this.onFormSubmit}
-                    />
+                    <div className="mb-3">
+                      <Form
+                        fields={[text]}
+                        onChangleHandler={this.onFormUpdate}
+                        onSubmitHandler={this.onFormSubmit}
+                      />
+                    </div>
+                    {postTemplate}
                   </div>
                 </div>
               </div>
@@ -107,7 +122,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addPost: newPost => dispatch(addPost(newPost))
+  addPost: newPost => dispatch(addPost(newPost)),
+  getPosts: () => dispatch(getPosts())
 });
 
 export default connect(
