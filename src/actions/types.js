@@ -1,4 +1,6 @@
 export const GET_ERRORS = "GET_ERRORS";
+
+/* PROFILE TYPES */
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const REGISTER = "REGISTER";
 export const Get_PROFILE = "GET_PROFILE";
@@ -14,3 +16,11 @@ export const ADD_EXPERIENCE = "ADD_EXPERIENCE";
 export const DELETE_EXPERIENCE = "DELETE_EXPERIENCE";
 export const ADD_EDUCATION = "ADD_EDUCATION";
 export const DELETE_EDUCATION = "DELETE_EDUCATION";
+
+/* POST TYPES */
+export const POST_LOADING = "POST_LOADING";
+export const GET_POSTS = "GET_POSTS";
+export const GET_POST = "GET_POST";
+export const GET_POSTS_PER_USER = "GET_POSTS_PER_USER";
+export const ADD_POST = "ADD_POST";
+export const DELETE_POST = "DELETE_POST";
