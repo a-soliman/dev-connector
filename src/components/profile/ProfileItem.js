@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import isEmpty from "../../validation/is-empty";
 
 class ProfileItem extends Component {
@@ -40,7 +38,7 @@ class ProfileItem extends Component {
             <ul className="list-group">
               {profile.skills.slice(0, 4).map((skill, i) => (
                 <li key={i} className="list-group-item">
-                  <FontAwesomeIcon icon={faCheck} /> {skill}
+                  <i className="fa fa-check" /> {skill}
                 </li>
               ))}
             </ul>

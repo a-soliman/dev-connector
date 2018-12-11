@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { deleteComment } from "../../actions/post";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 class CommentItem extends Component {
   onDeleteClick = ({ postId, commentId }) => {
@@ -37,7 +35,7 @@ class CommentItem extends Component {
                   commentId: comment._id
                 })}
               >
-                <FontAwesomeIcon icon={faTimes} />
+                <i className="fa fa-times" />
               </button>
             ) : null}
           </div>

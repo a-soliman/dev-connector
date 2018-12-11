@@ -1,14 +1,4 @@
 import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe } from "@fortawesome/free-solid-svg-icons";
-import {
-  faTwitter,
-  faFacebook,
-  faGithub,
-  faYoutube,
-  faLinkedin,
-  faInstagram
-} from "@fortawesome/free-brands-svg-icons";
 
 class ProfileHeader extends Component {
   render() {
@@ -40,14 +30,14 @@ class ProfileHeader extends Component {
 
               {profile.website ? (
                 <a className="text-white p-2" href={profile.website}>
-                  <FontAwesomeIcon icon={faGlobe} />
+                  <i className="fa fa-globe" />
                 </a>
               ) : null}
               {profile.social && Object.keys(profile.social).length > 0 ? (
                 <p>
                   {profile.social.twitter ? (
                     <a className="text-white p-2" href={profile.social.twitter}>
-                      <FontAwesomeIcon icon={faTwitter} />
+                      <i className="fa fa-twitter" />
                     </a>
                   ) : null}
 
@@ -56,7 +46,7 @@ class ProfileHeader extends Component {
                       className="text-white p-2"
                       href={profile.social.facebook}
                     >
-                      <FontAwesomeIcon icon={faFacebook} />
+                      <i className="fa fa-facebook" />
                     </a>
                   ) : null}
 
@@ -65,7 +55,7 @@ class ProfileHeader extends Component {
                       className="text-white p-2"
                       href={profile.social.linkedin}
                     >
-                      <FontAwesomeIcon icon={faLinkedin} />
+                      <i className="fa fa-linkedin" />
                     </a>
                   ) : null}
 
@@ -74,7 +64,7 @@ class ProfileHeader extends Component {
                       className="text-white p-2"
                       href={profile.social.instagram}
                     >
-                      <FontAwesomeIcon icon={faInstagram} />
+                      <i className="fa fa-instagram" />
                     </a>
                   ) : null}
                 </p>

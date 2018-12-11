@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 class ProfileAbout extends Component {
   render() {
@@ -28,7 +26,7 @@ class ProfileAbout extends Component {
               >
                 {profile.skills.map((skill, i) => (
                   <div className="p-3" key={i}>
-                    <FontAwesomeIcon icon={faCheck} /> {skill}
+                    <i className="fa fa-check" /> {skill}
                   </div>
                 ))}
               </div>

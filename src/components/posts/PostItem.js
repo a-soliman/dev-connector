@@ -2,12 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faThumbsUp,
-  faThumbsDown,
-  faTimes
-} from "@fortawesome/free-solid-svg-icons";
 import { deletePost, addLike, unLike } from "../../actions/post";
 
 class PostItem extends Component {
@@ -53,9 +47,8 @@ class PostItem extends Component {
                   className="btn btn-light mr-1"
                   onClick={this.onAddLike.bind(this, post._id)}
                 >
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    className={classnames({
+                  <i
+                    className={classnames("fa fa-thumbs-up", {
                       "text-info": this.likedByCurrentUser(post.likes)
                     })}
                   />
@@ -66,10 +59,7 @@ class PostItem extends Component {
                   className="btn btn-light mr-1"
                   onClick={this.onUnLike.bind(this, post._id)}
                 >
-                  <FontAwesomeIcon
-                    icon={faThumbsDown}
-                    className="text-secondary"
-                  />
+                  <i className=" fa fa-thumbs_down text-secondary" />
                 </button>
                 <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
                   Comments
@@ -80,7 +70,7 @@ class PostItem extends Component {
                     className="btn btn-danger mr-1"
                     onClick={this.onDeleteClick.bind(this, post._id)}
                   >
-                    <FontAwesomeIcon icon={faTimes} />
+                    <i className="fa fa-times" />
                   </button>
                 ) : null}
               </span>
