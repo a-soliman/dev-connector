@@ -18,6 +18,10 @@ export const register = userData => dispatch => {
 };
 
 export const googleLogin = token => dispatch => {
+  // Restructure the token
+  token = token.slice(7);
+  token = token.replace(/%20/, " ");
+
   // Save to localStorage
   localStorage.setItem("jwtToken", token);
   // Set token to auth header
