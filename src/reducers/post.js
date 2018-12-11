@@ -4,7 +4,9 @@ import {
   GET_POSTS,
   GET_POSTS_PER_USER,
   ADD_POST,
-  DELETE_POST
+  DELETE_POST,
+  ADD_LIKE,
+  UN_LIKE
 } from "../actions/types";
 
 import isEmpty from "../validation/is-empty";
@@ -51,10 +53,28 @@ export default (state = initialState, action) => {
         loading: false
       };
 
-    case DELETE_POST:
+    case ADD_POST:
       return {
         ...state,
-        posts: state.posts.filter(post => post._id !== action.payload._id),
+        posts: [action.payload, ...state.posts],
+        loading: false
+      };
+
+    case ADD_LIKE:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id !== action.payload._id ? post : action.payload
+        ),
+        loading: false
+      };
+
+    case UN_LIKE:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id !== action.payload._id ? post : action.payload
+        ),
         loading: false
       };
 

@@ -7,7 +7,9 @@ import {
   GET_POSTS_PER_USER,
   ADD_POST,
   DELETE_POST,
-  GET_ERRORS
+  GET_ERRORS,
+  ADD_LIKE,
+  UN_LIKE
 } from "./types";
 
 /* ACTIVATE LOADING */
@@ -108,4 +110,41 @@ export const deletePost = id => dispatch => {
         payload: err.response.data
       })
     );
+};
+
+/* ADD_LIKE */
+export const addLike = id => dispatch => {
+  axios
+    .post(`api/posts/like/${id}`)
+    .then(res =>
+      dispatch({
+        type: ADD_LIKE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+/* ADD_LIKE */
+export const unLike = id => dispatch => {
+  axios
+    .post(`api/posts/unlike/${id}`)
+    .then(res =>
+      dispatch({
+        type: UN_LIKE,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
 };

@@ -8,12 +8,24 @@ import {
   faThumbsDown,
   faTimes
 } from "@fortawesome/free-solid-svg-icons";
-import { deletePost } from "../../actions/post";
+import { deletePost, addLike, unLike } from "../../actions/post";
 
 class PostItem extends Component {
   onDeleteClick = id => {
     this.props.deletePost(id);
   };
+  onAddLike = id => {
+    this.props.addLike(id);
+  };
+  onUnLike = id => {
+    this.props.unLike(id);
+  };
+  likedByCurrentUser = likes => {
+    return (
+      likes.filter(like => like.user == this.props.auth.user.id).length > 0
+    );
+  };
+
   render() {
     const { post, auth } = this.props;
 
@@ -33,11 +45,24 @@ class PostItem extends Component {
           </div>
           <div className="col-md-10">
             <p className="lead">{post.text}</p>
-            <button type="button" className="btn btn-light mr-1">
-              <FontAwesomeIcon icon={faThumbsUp} className="text-info" />
+            <button
+              type="button"
+              className="btn btn-light mr-1"
+              onClick={this.onAddLike.bind(this, post._id)}
+            >
+              <FontAwesomeIcon
+                icon={faThumbsUp}
+                className={classnames({
+                  "text-info": this.likedByCurrentUser(post.likes)
+                })}
+              />
               <span className="badge badge-light">{post.likes.length}</span>
             </button>
-            <button type="button" className="btn btn-light mr-1">
+            <button
+              type="button"
+              className="btn btn-light mr-1"
+              onClick={this.onUnLike.bind(this, post._id)}
+            >
               <FontAwesomeIcon icon={faThumbsDown} className="text-secondary" />
             </button>
             <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
@@ -64,7 +89,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  deletePost: id => dispatch(deletePost(id))
+  deletePost: id => dispatch(deletePost(id)),
+  addLike: id => dispatch(addLike(id)),
+  unLike: id => dispatch(unLike(id))
 });
 
 export default connect(

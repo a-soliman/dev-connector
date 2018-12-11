@@ -24,3 +24,5 @@ export const GET_POST = "GET_POST";
 export const GET_POSTS_PER_USER = "GET_POSTS_PER_USER";
 export const ADD_POST = "ADD_POST";
 export const DELETE_POST = "DELETE_POST";
+export const ADD_LIKE = "ADD_LIKE";
+export const UN_LIKE = "UN_LIKE";
