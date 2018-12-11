@@ -30,8 +30,8 @@ export const getPost = id => dispatch => {
     )
     .catch(err =>
       dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
+        type: GET_POST,
+        payload: {}
       })
     );
 };
@@ -115,7 +115,7 @@ export const deletePost = id => dispatch => {
 /* ADD_LIKE */
 export const addLike = id => dispatch => {
   axios
-    .post(`api/posts/like/${id}`)
+    .post(`/api/posts/like/${id}`)
     .then(res =>
       dispatch({
         type: ADD_LIKE,
@@ -130,13 +130,32 @@ export const addLike = id => dispatch => {
     );
 };
 
-/* ADD_LIKE */
+/* UNLIKE */
 export const unLike = id => dispatch => {
   axios
-    .post(`api/posts/unlike/${id}`)
+    .post(`/api/posts/unlike/${id}`)
     .then(res =>
       dispatch({
         type: UN_LIKE,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+/* ADD_COMMENT */
+export const addComment = ({ id, comment }) => dispatch => {
+  axios
+    .post(`/api/posts/comment/${id}`, comment)
+    .then(res =>
+      dispatch({
+        type: GET_POST,
         payload: res.data
       })
     )

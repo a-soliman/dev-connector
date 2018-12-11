@@ -24,6 +24,7 @@ import Profile from "../components/profile/Profile";
 
 /* POST COMPONENTS */
 import Posts from "../components/posts/Posts";
+import Post from "../components/post/Post";
 
 import NotFoundPage from "../components/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
@@ -71,6 +72,7 @@ const AppRouter = () => (
         />
 
         <PrivateRoute path="/feed" component={Posts} exact={true} />
+        <PrivateRoute path="/post/:id" component={Post} exact={true} />
         <Route component={NotFoundPage} />
       </Switch>
       <Footer />
