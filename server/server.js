@@ -11,7 +11,7 @@ const posts = require("./routes/api/posts");
 
 /* EXPRESS APP */
 const app = express();
-const port = process.env.PORT || 5555;
+const port = process.env.PORT || 5001;
 
 /* BODY PARSER CONFIGURATIONS */
 app.use(bodyParser.urlencoded({ extended: false }));

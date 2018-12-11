@@ -7,7 +7,7 @@
   "main": "index.js",
   "author": "Ahmed Soliman",
   "license": "MIT",
-  "proxy": "http://localhost:5555",
+  "proxy": "http://localhost:5001",
   "scripts": {
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
@@ -16,7 +16,7 @@
     "dev-server": "concurrently \"npm run dev-server-fe\" \"npm run dev-server-be\"",
     "test": "cross-env NODE_ENV=test jest --config=jest.config.json",
     "start": "node server/server.js",
-    "heroku-postbuild": "NPM_CONGIF_PRODUCTION=false && npm install && npm run build:prod"
+    "heroku-postbuild": "npm run build:prod"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
