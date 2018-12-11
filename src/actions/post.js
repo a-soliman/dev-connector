@@ -1,6 +1,7 @@
 import axios from "axios";
 import { history } from "../routers/AppRouter";
 import {
+  CLEAR_ERRORS,
   POST_LOADING,
   GET_POST,
   GET_POSTS,
@@ -11,6 +12,11 @@ import {
   ADD_LIKE,
   UN_LIKE
 } from "./types";
+
+/* CLEAR_ERRORS */
+export const clearErrors = () => ({
+  type: CLEAR_ERRORS
+});
 
 /* ACTIVATE LOADING */
 export const setPostLoading = () => ({
@@ -76,6 +82,7 @@ export const getPostsPerUser = userId => dispatch => {
 
 /* ADD_POST */
 export const addPost = newPost => dispatch => {
+  dispatch(clearErrors());
   dispatch(setPostLoading());
   axios
     .post("/api/posts", newPost)
@@ -141,7 +148,6 @@ export const unLike = id => dispatch => {
       })
     )
     .catch(err => {
-      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -151,6 +157,7 @@ export const unLike = id => dispatch => {
 
 /* ADD_COMMENT */
 export const addComment = ({ id, comment }) => dispatch => {
+  dispatch(clearErrors());
   axios
     .post(`/api/posts/comment/${id}`, comment)
     .then(res =>
@@ -160,7 +167,24 @@ export const addComment = ({ id, comment }) => dispatch => {
       })
     )
     .catch(err => {
-      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+/* DELETE_COMMENT */
+export const deleteComment = ({ postId, commentId }) => dispatch => {
+  axios
+    .delete(`/api/posts/comment/${postId}/${commentId}`)
+    .then(res =>
+      dispatch({
+        type: GET_POST,
+        payload: res.data
+      })
+    )
+    .catch(err => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data

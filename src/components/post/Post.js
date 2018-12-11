@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Spinner from "../ui/Spinner";
 import Form from "../ui/Form";
 import PostItem from "../posts/PostItem";
+import CommentFeed from "./CommentFeed";
 import { getPost, addComment } from "../../actions/post";
 
 class Post extends Component {
@@ -123,6 +124,7 @@ class Post extends Component {
                         onSubmitHandler={this.onFormSubmit}
                       />
                     </div>
+                    <CommentFeed comments={post.comments} postId={post._id} />
                   </div>
                 </div>
               </div>
