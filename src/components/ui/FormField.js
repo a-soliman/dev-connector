@@ -13,12 +13,12 @@ const FormField = ({ field, onChangeHandler }) => {
 
     if (field.inputGroup) {
       let icon;
-      if (field.icon === "twitter") icon = "fa fa-twitter";
-      if (field.icon === "facebook") icon = "fa fa-facebook";
-      if (field.icon === "youtube") icon = "fa fa-youtube";
-      if (field.icon === "linkedin") icon = "fa fa-linkedin";
-      if (field.icon === "github") icon = "fa fa-github";
-      if (field.icon === "instagram") icon = "fa fa-instagram";
+      if (field.icon === "twitter") icon = "fab fa-twitter";
+      if (field.icon === "facebook") icon = "fab fa-facebook";
+      if (field.icon === "youtube") icon = "fab fa-youtube";
+      if (field.icon === "linkedin") icon = "fab fa-linkedin";
+      if (field.icon === "github") icon = "fab fa-github";
+      if (field.icon === "instagram") icon = "fab fa-instagram";
 
       template = (
         <div className="input-group mb-3">

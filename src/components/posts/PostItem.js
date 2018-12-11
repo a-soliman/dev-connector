@@ -59,7 +59,7 @@ class PostItem extends Component {
                   className="btn btn-light mr-1"
                   onClick={this.onUnLike.bind(this, post._id)}
                 >
-                  <i className=" fa fa-thumbs_down text-secondary" />
+                  <i className="fa fa-thumbs-down text-secondary" />
                 </button>
                 <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
                   Comments

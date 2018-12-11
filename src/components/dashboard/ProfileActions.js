@@ -5,10 +5,10 @@ const PrfileActions = () => {
   return (
     <div className="btn-group mb-4" role="group">
       <Link to="/edit-profile" className="btn btn-light">
-        <i className="fa fa-circle" /> Edit Profile
+        <i className="fa fa-user-circle text-info" /> Edit Profile
       </Link>
       <Link to="/add-experience" className="btn btn-light">
-        <i className="fab fa-briefcase text-info mr-1" />
+        <i className="fas fa-briefcase text-info mr-1" />
         Add Experience
       </Link>
       <Link to="/add-education" className="btn btn-light">

@@ -37,7 +37,7 @@ class ProfileHeader extends Component {
                 <p>
                   {profile.social.twitter ? (
                     <a className="text-white p-2" href={profile.social.twitter}>
-                      <i className="fa fa-twitter" />
+                      <i className="fab fa-twitter" />
                     </a>
                   ) : null}
 
@@ -46,7 +46,7 @@ class ProfileHeader extends Component {
                       className="text-white p-2"
                       href={profile.social.facebook}
                     >
-                      <i className="fa fa-facebook" />
+                      <i className="fab fa-facebook" />
                     </a>
                   ) : null}
 
@@ -55,7 +55,7 @@ class ProfileHeader extends Component {
                       className="text-white p-2"
                       href={profile.social.linkedin}
                     >
-                      <i className="fa fa-linkedin" />
+                      <i className="fab fa-linkedin" />
                     </a>
                   ) : null}
 
@@ -64,7 +64,7 @@ class ProfileHeader extends Component {
                       className="text-white p-2"
                       href={profile.social.instagram}
                     >
-                      <i className="fa fa-instagram" />
+                      <i className="fab fa-instagram" />
                     </a>
                   ) : null}
                 </p>
