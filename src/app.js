@@ -18,7 +18,6 @@ import { faStroopwafel } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faStroopwafel);
 
-import { firebase } from "./firebase/firebase";
 import LoadingPage from "./components/LoadingPage";
 
 const store = configureStore();
