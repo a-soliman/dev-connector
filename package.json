@@ -1,6 +1,9 @@
 {
   "name": "dev-connector",
   "version": "1.0.0",
+  "engines": {
+    "node": "9.10.1"
+  },
   "main": "index.js",
   "author": "Ahmed Soliman",
   "license": "MIT",
